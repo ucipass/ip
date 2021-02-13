@@ -9,7 +9,6 @@ const TELNET_PORT = process.env.TELNET_PORT ? process.env.TELNET_PORT : "2323"
 
 net.createServer( async (tcpsocket) => {
     let ipaddr = tcpsocket.remoteAddress
-    ipaddr = "99.84.160.31"
     let lookup_city = await maxmind.open(geolite2.paths.city)
     let geo1 = lookup_city.get(ipaddr);
     log.debug(geo1)

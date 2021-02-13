@@ -22,15 +22,15 @@ net.createServer( async (tcpsocket) => {
     let as_number = geo2?.autonomous_system_number
     let as_org = geo2?.autonomous_system_organization
     let output = ""
-    output += `##################################################\n`
-    output += `IP address: ${ipaddr}\n`
-    output += `City: ${city}\n`
-    output += `Country: ${country}\n`
-    output += `GPS: ${gps}\n`
-    output += `TimeZone: ${timezone}\n`
-    output += `AS Number: ${as_number}\n`
-    output += `AS Org Name: ${as_org}\n`
-    output += `##################################################\n`
+    output += `##################################################\r\n`
+    output += `Your source IP address: ${ipaddr}\r\n`
+    output += `City: ${city}\r\n`
+    output += `Country: ${country}\r\n`
+    output += `GPS: ${gps}\r\n`
+    output += `TimeZone: ${timezone}\r\n`
+    output += `AS Number: ${as_number}\r\n`
+    output += `AS Org Name: ${as_org}\r\n`
+    output += `##################################################\r\n`
     tcpsocket.write(output)
     tcpsocket.end()
     log_output = `${ipaddr},${country},${city},${gps},${timezone},${as_number},${as_org}`

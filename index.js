@@ -31,10 +31,10 @@ net.createServer( async (tcpsocket) => {
     output += `AS Number: ${as_number}\n`
     output += `AS Org Name: ${as_org}\n`
     output += `##################################################\n`
-
     tcpsocket.write(output)
     tcpsocket.end()
-
+    log_output = `${ipaddr},${country},${city},${gps},${timezone},${as_number},${as_org}`
+    log.info(log_output)
 }).listen(TELNET_PORT, '0.0.0.0',()=> { 
     log.info(`Telnet server started on port ${TELNET_PORT}!`)  
 })

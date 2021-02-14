@@ -1,5 +1,5 @@
 # Usage
-Telnet server that returns the client's IP address and related information based on the MaxMind, GeoIP location database.
+Telnet server that returns the client's IP address and related information based on the MaxMind GeoIP location database.
 
 #Demo
 ![grab-landing-page](https://github.com/ucipass/ip/blob/main/telnet-geoip-from-gcp.gif)

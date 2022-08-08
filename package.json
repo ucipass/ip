@@ -20,6 +20,7 @@
   "dependencies": {
     "geolite2": "^3.4.0",
     "maxmind": "^4.3.1",
+    "request-ip": "^3.3.0",
     "ucipass-logger": "^1.0.5"
   }
 }

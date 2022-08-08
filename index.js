@@ -1,14 +1,17 @@
 const net = require('net');
 const path = require('path')
+const requestIp = require('request-ip');
 var geolite2 = require('geolite2');
 var maxmind = require('maxmind');
+const http = require('http');
 
 var log = require("ucipass-logger")("ip")
 log.transports.console.level = process.env.LOG_LEVEL ? process.env.LOG_LEVEL : "info"
 const TELNET_PORT = process.env.TELNET_PORT ? process.env.TELNET_PORT : "2323"
+const HTTP_PORT = process.env.HTTP_PORT ? process.env.HTTP_PORT : "8080"
 
-net.createServer( async (tcpsocket) => {
-    let ipaddr = tcpsocket.remoteAddress
+// GEO LOOKUP
+async function get_ip_info(ipaddr) {
     let lookup_city = await maxmind.open(geolite2.paths.city)
     let geo1 = lookup_city.get(ipaddr);
     log.debug(geo1)
@@ -31,6 +34,13 @@ net.createServer( async (tcpsocket) => {
     output += `AS Number: ${as_number}\r\n`
     output += `AS Org Name: ${as_org}\r\n`
     output += `##################################################\r\n`
+    return output
+}
+
+// TELNET SERVER
+net.createServer( async (tcpsocket) => {
+    let ipaddr = tcpsocket.remoteAddress
+    let output = await get_ip_info(ipaddr)
     tcpsocket.write(output)
     tcpsocket.end()
     log_output = `${ipaddr},${country},${city},${gps},${timezone},${as_number},${as_org}`
@@ -38,3 +48,18 @@ net.createServer( async (tcpsocket) => {
 }).listen(TELNET_PORT, '0.0.0.0',()=> { 
     log.info(`Telnet server started on port ${TELNET_PORT}!`)  
 })
+
+// HTTP SERVER
+var server = http.createServer(async function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  const ipaddr = requestIp.getClientIp(req); 
+  let output = await get_ip_info(ipaddr)
+  res.end(output);
+//   res.end('Hello ' + req.socket.remoteAddress + '!');
+  // Client address in request -----^
+});
+server.on('connection', function(sock) {
+  console.log('Client connected from ' + sock.remoteAddress);
+  // Client address at time of connection ----^
+});
+server.listen(HTTP_PORT, '0.0.0.0');

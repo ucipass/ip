@@ -62,4 +62,6 @@ server.on('connection', function(sock) {
   console.log('Client connected from ' + sock.remoteAddress);
   // Client address at time of connection ----^
 });
-server.listen(HTTP_PORT, '0.0.0.0');
+server.listen(HTTP_PORT, '0.0.0.0',()=> { 
+    log.info(`HTTP server started on port ${HTTP_PORT}!`)  
+})

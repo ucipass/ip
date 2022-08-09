@@ -9,6 +9,7 @@ var log = require("ucipass-logger")("ip")
 log.transports.console.level = process.env.LOG_LEVEL ? process.env.LOG_LEVEL : "info"
 const TELNET_PORT = process.env.TELNET_PORT ? process.env.TELNET_PORT : "2323"
 const HTTP_PORT = process.env.HTTP_PORT ? process.env.HTTP_PORT : "8080"
+const SYSLOG_PORT = process.env.SYSLOG_PORT ? process.env.SYSLOG_PORT : "5514"
 
 // GEO LOOKUP
 async function get_ip_info(ipaddr) {
@@ -73,7 +74,7 @@ const Syslog = require('simple-syslog-server') ;
 // Create our syslog server with the given transport
 const socktype = 'UDP' ; // or 'TCP' or 'TLS'
 const address = '' ; // Any
-const port = 5514 ;
+const port = SYSLOG_PORT ;
 var server = Syslog(socktype) ;
 
 // State Information
@@ -121,7 +122,7 @@ server.on('msg', data => {
 .listen({host: address, port: port})
 .then(() => {
 	listening = true ;
-	log.info(`Syslog started on: ${address}:${port}`) ;
+	log.info(`Syslog started on port: ${address}:${port}`) ;
 })
 .catch(err => {
 	if ((err.code == 'EACCES') && (port < 1024)) {

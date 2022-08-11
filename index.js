@@ -4,11 +4,17 @@ const requestIp = require('request-ip');
 var geolite2 = require('geolite2');
 var maxmind = require('maxmind');
 const http = require('http');
+const express = require('express');
+const https = require("https")
+const fs = require("fs");
 
 var log = require("ucipass-logger")("ip")
 log.transports.console.level = process.env.LOG_LEVEL ? process.env.LOG_LEVEL : "info"
 const TELNET_PORT = process.env.TELNET_PORT ? process.env.TELNET_PORT : "2323"
 const HTTP_PORT = process.env.HTTP_PORT ? process.env.HTTP_PORT : "8080"
+const HTTPS_PORT = process.env.HTTPS_PORT ? process.env.HTTPS_PORT : "8443"
+const CERT_PEM = process.env.CERT_PEM || "cert.pem"
+const CERT_KEY = process.env.CERT_KEY || "cert.key"
 const SYSLOG_PORT = process.env.SYSLOG_PORT ? process.env.SYSLOG_PORT : "5514"
 
 // GEO LOOKUP
@@ -50,25 +56,45 @@ net.createServer( async (tcpsocket) => {
     log.info(`Telnet server started on port ${TELNET_PORT}!`)  
 })
 
-// HTTP SERVER
-var server = http.createServer(async function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  const ipaddr = requestIp.getClientIp(req); 
-  let output = await get_ip_info(ipaddr)
-  res.end(output);
-//   res.end('Hello ' + req.socket.remoteAddress + '!');
-  // Client address in request -----^
+// // HTTP SERVER
+// var server = http.createServer(async function (req, res) {
+//   res.writeHead(200, {'Content-Type': 'text/plain'});
+//   const ipaddr = requestIp.getClientIp(req); 
+//   let output = await get_ip_info(ipaddr)
+//   res.end(output);
+// //   res.end('Hello ' + req.socket.remoteAddress + '!');
+//   // Client address in request -----^
+// });
+// server.on('connection', function(sock) {
+//   console.log('Client connected from ' + sock.remoteAddress);
+//   // Client address at time of connection ----^
+// });
+// server.listen(HTTP_PORT, '0.0.0.0',()=> { 
+//     log.info(`HTTP server started on port ${HTTPS_PORT}!`)  
+// })
+
+// HTTPS SERVER
+const options = {
+    key: fs.readFileSync(CERT_KEY),
+    cert: fs.readFileSync(CERT_PEM)
+};
+
+const app = express();
+app.use((req, res) => {
+	res.set('Alt-Svc', 'h3=":4433');
+	res.writeHead(200);
+	res.end("If you see this you are NOT using QUIC! The alt-svc redirection did not work!\n");
 });
-server.on('connection', function(sock) {
-  console.log('Client connected from ' + sock.remoteAddress);
-  // Client address at time of connection ----^
+http.createServer(app).listen(HTTP_PORT,"0.0.0.0", ()=>{ 
+	log.info(`HTTP server started on port ${HTTP_PORT}!`)  
 });
-server.listen(HTTP_PORT, '0.0.0.0',()=> { 
-    log.info(`HTTP server started on port ${HTTP_PORT}!`)  
-})
+https.createServer(options, app).listen(HTTPS_PORT,"0.0.0.0", ()=>{ 
+	log.info(`HTTPS server started on port ${HTTPS_PORT}!`)  
+});
+
+
 
 //SYSLOG SERVER
-
 const Syslog = require('simple-syslog-server') ;
 
 // Create our syslog server with the given transport

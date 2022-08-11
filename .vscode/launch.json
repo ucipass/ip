@@ -5,12 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "pwa-node",
+            "type": "node",
             "request": "launch",
             "name": "Launch Program",
             "env": {
                 "LOG_LEVEL": "debug",
-                "TELNET_PORT": "2323"
+                "TELNET_PORT": "2323",
+                "CERT_PEM": "/home/aarato/cert.pem",
+                "CERT_KEY": "/home/aarato/cert.key",
+                "HTTP_PORT": "8888",
+                "HTTPS_PORT": "8443"
             },
             "skipFiles": [
                 "<node_internals>/**"

@@ -3,7 +3,7 @@ var maxmind = require('maxmind');
 const log = require("./log.js")
 
 
-module.exports = async function (ipaddr) {
+module.exports = async function (ipaddr,source) {
     let lookup_city = await maxmind.open(geolite2.paths.city)
     let geo1 = lookup_city.get(ipaddr);
     log.debug(geo1)
@@ -26,7 +26,7 @@ module.exports = async function (ipaddr) {
     output += `AS Number: ${as_number}\r\n`
     output += `AS Org Name: ${as_org}\r\n`
     output += `##################################################\r\n`
-    log_output = `${ipaddr},${country},${city},${gps},${timezone},${as_number},${as_org}`
+    log_output = `${source} - ${ipaddr},${country},${city},${gps},${timezone},${as_number},${as_org}`
     log.info(log_output)    
     return output
 }

@@ -11,6 +11,7 @@ const CERT_KEY = process.env.CERT_KEY || "cert.key"
 
 
 // HTTPS SERVER
+const htmlpage = fs.readFileSync('index.html', 'utf8');
 const options = {
     key: fs.readFileSync(CERT_KEY),
     cert: fs.readFileSync(CERT_PEM)
@@ -18,9 +19,11 @@ const options = {
 
 const app = express();
 app.use((req, res) => {
-	res.set('Alt-Svc', 'h3=":4433');
-	res.writeHead(200);
-	res.end("If you see this you are NOT using QUIC! The alt-svc redirection did not work!\n");
+    res.set('alt-svc', 'h3=":443"; ma=2592000,h3-27=":443"; ma=2592000,h3-29=":443"; ma=2592000,quic=":443"; ma=2592000');
+    res.set('Cache-Control','private, no-cache, no-store, must-revalidate')
+    res.set('Content-Type','text/html')
+    //res.set('X-Content-Type-Options','nosniff')
+    res.writeHead(200);	res.end(htmlpage);
 });
 http.createServer(app).listen(HTTP_PORT,"0.0.0.0", ()=>{ 
 	log.info(`HTTP server started on port ${HTTP_PORT}!`)  
@@ -28,6 +31,3 @@ http.createServer(app).listen(HTTP_PORT,"0.0.0.0", ()=>{
 https.createServer(options, app).listen(HTTPS_PORT,"0.0.0.0", ()=>{ 
 	log.info(`HTTPS server started on port ${HTTPS_PORT}!`)  
 });
-
-
-

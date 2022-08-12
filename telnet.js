@@ -10,4 +10,6 @@ module.exports = net.createServer( async (tcpsocket) => {
     tcpsocket.end()
 }).listen(TELNET_PORT, '0.0.0.0',()=> { 
     log.info(`Telnet server started on port ${TELNET_PORT}!`)  
-})
+}).on('error', function(error) {
+    console.log(error)
+});

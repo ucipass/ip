@@ -13,7 +13,7 @@ const server = new Server({
     kex: ["curve25519-sha256","curve25519-sha256@libssh.org","ecdh-sha2-nistp256","ecdh-sha2-nistp384","ecdh-sha2-nistp521","diffie-hellman-group-exchange-sha256","diffie-hellman-group14-sha256","diffie-hellman-group15-sha512","diffie-hellman-group16-sha512","diffie-hellman-group17-sha512","diffie-hellman-group18-sha512","diffie-hellman-group-exchange-sha1","diffie-hellman-group14-sha1","diffie-hellman-group1-sha1" ]
   }
 }, (client) => {
-  console.log('Client connected!');
+    log.debug('SSH Client disconnected');
 
   client.on('authentication', (ctx) => {
     let allowed = true;
@@ -22,7 +22,7 @@ const server = new Server({
     else
       ctx.reject();
   }).on('ready', () => {
-    console.log('Client authenticated!');
+    log.debug('SSH Client authenticated');
 
     client.once('session', (accept, reject) => {
         accept().once('pty', (accept, reject, info) => {
@@ -49,7 +49,7 @@ const server = new Server({
         });
       });
   }).on('close', () => {
-    console.log('Client disconnected');
+    log.debug('SSH Client disconnected');
   });
 }).listen( SSH_PORT , '0.0.0.0', function() {
     log.info(`SSH2 server started on port ${SSH_PORT}!`)  

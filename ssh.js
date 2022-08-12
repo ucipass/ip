@@ -41,7 +41,7 @@ const server = new Server({
           accept && accept();
         }).once('shell', async (accept, reject) => {
           stream = accept();
-          ipaddr = client._sock.localAddress
+          ipaddr = client._sock.remoteAddress
           let output = await geolookup(ipaddr,"SSH Client")
           stream.write(output);
           stream.exit(0);

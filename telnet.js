@@ -10,7 +10,8 @@ const server = net.createServer( async (tcpsocket) => {
         tcpsocket.write(output)
         tcpsocket.end()
     } catch (error) {
-        log.error("Exception:", output)
+        log.error(`Exception for: ${ipaddr}`)
+        log.debug(output)
     }
 
 })

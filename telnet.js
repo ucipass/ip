@@ -17,16 +17,13 @@ const server = net.createServer( async (tcpsocket) => {
 })
 
 server.maxConnections = 10
-
 server.listen(TELNET_PORT, '0.0.0.0',()=> { 
     log.info(`Telnet server started on port ${TELNET_PORT}!`)  
 })
-
 server.on('error', (err) => {
     log.error("Telnet Server Error!")
-    console.log(err)
+    log.debug(err)
 });
-
 
 
 module.exports = server

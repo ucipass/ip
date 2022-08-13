@@ -16,6 +16,7 @@ const server = net.createServer( async (tcp) => {
     })
     tcp.on("error", (err) =>{
         log.info(`tcp error occured for ${ipaddr}!`)  
+        log.error(err)  
     })
     tcp.on("ready", () =>{
         log.info(`tcp socket is ready for ${ipaddr}!`)  

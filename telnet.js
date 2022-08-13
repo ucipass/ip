@@ -6,22 +6,22 @@ const TELNET_PORT = process.env.TELNET_PORT || "2323"
 const server = net.createServer( async (tcp) => {
     let ipaddr = tcp.remoteAddress
     tcp.on("close",(err)=>{
-        log.debug(`tcp connection closed for ${ipaddr}!`)  
+        log.info(`tcp connection closed for ${ipaddr}!`)  
     })
     tcp.on("data", (data) =>{
-        log.silly(`tcp data received from ${ipaddr}!`)  
+        log.info(`tcp data received from ${ipaddr}!`)  
     })
     tcp.on("drain", () =>{
-        log.silly(`tcp write buffer becomes empty for ${ipaddr}!`)  
+        log.info(`tcp write buffer becomes empty for ${ipaddr}!`)  
     })
     tcp.on("error", (err) =>{
-        log.silly(`tcp error occured for ${ipaddr}!`)  
+        log.info(`tcp error occured for ${ipaddr}!`)  
     })
     tcp.on("ready", () =>{
-        log.silly(`tcp socket is ready for ${ipaddr}!`)  
+        log.info(`tcp socket is ready for ${ipaddr}!`)  
     })
     tcp.on("timeout", () =>{
-        log.silly(`tcp timeout occured for ${ipaddr}!`)  
+        log.info(`tcp timeout occured for ${ipaddr}!`)  
     })
 
     let output = await geolookup(ipaddr,"Telnet Client")

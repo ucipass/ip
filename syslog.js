@@ -39,7 +39,7 @@ server.on('msg', data => {
 	}else{
 		const regex = /SRC=(.*) DST=/;
 		const found = data.msg.match(regex)
-		console.log(found)
+		console.log(regex,found)
 	}
 
 	/*

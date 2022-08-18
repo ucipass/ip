@@ -22,7 +22,7 @@ export default {
     console.log("mounted: Socket.IO")
     let elements = document.getElementById('socketio-icon');
     // const socket = io("ws://localhost:8888")
-    const socket = io()    
+    const socket = process.env.NODE_ENV === "development" ? io("ws://localhost:8888") : io()    
 
     socket.on('connect', () => {
       console.log("Socket.io connected.")
@@ -70,8 +70,7 @@ export default {
       }
     })      
     socket.on("ssh", (arg) => {
-      try {
-        
+      try {      
         let json = JSON.parse(arg)
         console.log(json)
         store.output += "\n" + "(SSH): "      
@@ -84,7 +83,7 @@ export default {
         store.output += `GPS: ${json.gps}`
       } catch (error) {
         console.log(error)
-        store.output += "\n" + "Syslog: invalid data received from server!"  
+        store.output += "\n" + "Syslog: innvalid data received from server!"  
       }
     })      
 

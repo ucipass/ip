@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Launch Server",
             "env": {
                 "LOG_LEVEL": "debug",
                 "TELNET_PORT": "2323",
@@ -20,6 +20,19 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/index.js",
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Syslog Client - Testing",
+            "env": {
+                "SYSLOG_PORT": "5514"
+            },
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/syslog-client.js",
             "console": "integratedTerminal"
         }
     ]

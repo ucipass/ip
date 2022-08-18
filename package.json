@@ -19,13 +19,18 @@
   "homepage": "https://github.com/ucipass/ip#readme",
   "dependencies": {
     "blessed": "^0.1.81",
+    "cors": "^2.8.5",
     "express": "^4.18.1",
     "geolite2": "^3.5.1",
     "maxmind": "^4.3.1",
     "request-ip": "^3.3.0",
     "simple-syslog-server": "^1.0.0",
+    "socket.io": "^4.5.1",
     "ssh2": "^1.11.0",
-    "winston": "^3.8.1"
+    "syslog-client": "^1.1.1",
+    "vue": "^3.2.36",
+    "winston": "^3.8.1",
+    "winston-syslog": "^2.6.0"
   },
   "geolite2": {
     "license-key": "Hy7zLdKAJ1I2XJbA"

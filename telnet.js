@@ -2,6 +2,8 @@ const net = require('net')
 const log = require('./log.js')
 const geolookup = require('./geolookup.js')
 const TELNET_PORT = process.env.TELNET_PORT || "2323"
+const sio = require("./sio.js")
+const { isObject } = require('@vue/shared')
 
 const server = net.createServer( async (tcp) => {
     let ipaddr = tcp.remoteAddress
@@ -26,9 +28,13 @@ const server = net.createServer( async (tcp) => {
     })
 
     let output = await geolookup(ipaddr,"Telnet Client")
+    output = JSON.stringify(output, null, 2)
     try {
         tcp.write(output)
         tcp.end()
+        const io = await sio
+        io.of("/").emit("telnet",output)
+
     } catch (error) {
         log.error(`Exception for: ${ipaddr}`)
         log.debug(output)

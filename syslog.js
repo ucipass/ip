@@ -5,6 +5,8 @@ const SYSLOG_PORT = process.env.SYSLOG_PORT ? process.env.SYSLOG_PORT : "5514"
 const net = require('net');
 const path = require('path')
 const requestIp = require('request-ip');
+const sio = require("./sio.js")
+const geolookup = require('./geolookup.js')
 
 // Create our syslog server with the given transport
 const socktype = 'UDP' ; // or 'TCP' or 'TLS'
@@ -17,8 +19,22 @@ var listening = false ;
 var clients = [] ;
 var count = 0 ;
 
+async function send_io(json){
+	ipaddr = json.address
+    let output = await geolookup(ipaddr,"Telnet Client")
+	output.msg = json.msg
+    output_string = JSON.stringify(output, null, 2)	
+	const io = await sio
+	io.of("/").emit("syslog",output_string)
+}
+
 server.on('msg', data => {
 	console.log('message received (%i) from %s:%i\n%o\n', ++count, data.address, data.port, data) ;
+	const json = {
+		address: data.address,
+		msg: data.msg
+	}
+	send_io(json)	
 	/*
 	message received (1) from ::ffff:192.168.1.13:59666
 	{

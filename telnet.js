@@ -28,9 +28,9 @@ const server = net.createServer( async (tcp) => {
     })
 
     let output = await geolookup(ipaddr,"Telnet Client")
-    output = JSON.stringify(output, null, 2)
+    output_string = JSON.stringify(output, null, 2)
     try {
-        tcp.write(output)
+        tcp.write(output_string)
         tcp.end()
         const io = await sio
         io.of("/").emit("telnet",output)

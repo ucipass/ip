@@ -29,7 +29,7 @@ async function send_io(json){
 }
 
 server.on('msg', async data => {
-	console.log('message received (%i) from %s:%i\n%o\n', ++count, data.address, data.port, data) ;
+	log.debug('message received (%i) from %s:%i\n%o\n', ++count, data.address, data.port, data) ;
 	if ( data.msg.search("PROTO=ICMP") < 0 ) {
 		const json = {
 			address: data.address,

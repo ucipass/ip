@@ -37,7 +37,7 @@ server.on('msg', data => {
 		}
 		send_io(json)	
 	}else{
-		const regex = /SRC=(.*) DST=/g;
+		const regex = /SRC=(.*) DST=/;
 		const found = data.msg.match(regex)
 		console.log(found)
 	}

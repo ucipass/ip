@@ -28,7 +28,7 @@ async function send_io(json){
 	io.of("/").emit("syslog",output_string)
 }
 
-server.on('msg', data => {
+server.on('msg', async data => {
 	console.log('message received (%i) from %s:%i\n%o\n', ++count, data.address, data.port, data) ;
 	if ( data.msg.search("PROTO=ICMP") < 0 ) {
 		const json = {

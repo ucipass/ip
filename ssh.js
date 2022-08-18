@@ -1,5 +1,6 @@
 const log = require('./log.js')
 const geolookup = require('./geolookup.js')
+const sio = require("./sio.js")
 const { readFileSync } = require('fs');
 const { utils: { parseKey }, Server } = require('ssh2');
 const SSH_PORT = process.env.SSH_PORT || "2222"
@@ -43,10 +44,12 @@ const server = new Server({
           stream = accept();
           ipaddr = client._sock.remoteAddress
           let output = await geolookup(ipaddr,"SSH Client")
-          output = JSON.stringify(output)
-          stream.write(output);
+          output_string = JSON.stringify(output)
+          stream.write(output_string);
           stream.exit(0);
           stream.end();
+          const io = await sio
+          io.of("/").emit("telnet",output)          
         });
       });
   }).on('close', () => {

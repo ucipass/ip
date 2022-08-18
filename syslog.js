@@ -30,11 +30,18 @@ async function send_io(json){
 
 server.on('msg', data => {
 	console.log('message received (%i) from %s:%i\n%o\n', ++count, data.address, data.port, data) ;
-	const json = {
-		address: data.address,
-		msg: data.msg
+	if ( data.msg.search("PROTO=ICMP") < 0 ) {
+		const json = {
+			address: data.address,
+			msg: data.msg
+		}
+		send_io(json)	
+	}else{
+		const regex = /SRC=.* DST=/g;
+		const found = data.msg.match(regex)
+		console.log(found)
 	}
-	send_io(json)	
+
 	/*
 	message received (1) from ::ffff:192.168.1.13:59666
 	{

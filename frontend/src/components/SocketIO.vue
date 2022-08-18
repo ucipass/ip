@@ -69,6 +69,24 @@ export default {
         store.output += "\n" + "Syslog: invalid data received from server!"  
       }
     })      
+    socket.on("ssh", (arg) => {
+      try {
+        
+        let json = JSON.parse(arg)
+        console.log(json)
+        store.output += "\n" + "(SSH): "      
+        store.output += `IP: ${json.ipaddr}, `
+        store.output += `Message: ${json.msg}, `   
+        store.output += `City: ${json.city}, `   
+        store.output += `Country: ${json.country}, `
+        store.output += `AS Number: ${json.as_number}, `
+        store.output += `AS Organization: ${json.as_org}, `   
+        store.output += `GPS: ${json.gps}`
+      } catch (error) {
+        console.log(error)
+        store.output += "\n" + "Syslog: invalid data received from server!"  
+      }
+    })      
 
   }
 }

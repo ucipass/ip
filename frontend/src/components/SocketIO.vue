@@ -87,6 +87,23 @@ export default {
       }
     })      
 
+    socket.on("icmp", (arg) => {
+      try {      
+        let json = JSON.parse(arg)
+        console.log(json)
+        store.output += "\n" + "(ICMP): "      
+        store.output += `IP: ${json.ipaddr}, `
+        store.output += `City: ${json.city}, `   
+        store.output += `Country: ${json.country}, `
+        store.output += `AS Number: ${json.as_number}, `
+        store.output += `AS Organization: ${json.as_org}, `   
+        store.output += `GPS: ${json.gps}`
+      } catch (error) {
+        console.log(error)
+        store.output += "\n" + "Syslog: innvalid data received from server!"  
+      }
+    })      
+
   }
 }
 </script>

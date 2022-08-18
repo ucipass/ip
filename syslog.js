@@ -39,7 +39,11 @@ server.on('msg', data => {
 	}else{
 		const regex = /SRC=(.*) DST=/;
 		const found = data.msg.match(regex)
-		console.log(found[1])
+		let ipaddr = found[1]
+		let output = await geolookup(ipaddr,"ICMP")
+		output_string = JSON.stringify(output, null, 2)	
+		const io = await sio
+		io.of("/").emit("icmp",output_string)
 	}
 
 	/*

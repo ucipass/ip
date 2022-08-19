@@ -38,5 +38,5 @@ const options = {
 const transport = new winston.transports.Syslog(options);
 const logger = new winston.createLogger({ transports: [transport] });
 
-logger.log('info', 'Test message to actually use socket');
+logger.log('info', 'HELLOW PROTO=IICMP 12312 SRC=152.66.115.1 DST=');
 logger.remove(transport);

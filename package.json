@@ -28,6 +28,7 @@
     "socket.io": "^4.5.1",
     "ssh2": "^1.11.0",
     "syslog-client": "^1.1.1",
+    "ua-parser-js": "^1.0.2",
     "vue": "^3.2.36",
     "winston": "^3.8.1",
     "winston-syslog": "^2.6.0"

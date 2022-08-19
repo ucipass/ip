@@ -1,6 +1,7 @@
 <template>
       <a class="navbar-brand m-0 ms-2 p-0" href="#">
-        <i id="socketio-icon" class="bi bi-info-square" style="font-size: 1.5rem;"></i>
+        <i v-if="connected" id="socketio-icon" class="bi bi-check-circle text-success" style="font-size: 1.5rem;"></i>
+        <i v-if="!connected" id="socketio-icon" class="bi bi-x-circle text-danger" style="font-size: 1.5rem;"></i>
       </a>
 </template>
 
@@ -15,25 +16,28 @@ export default {
   },
   data() {
     return {
-      store
+      store,
+      connected: false
     }
   },
   mounted: async function() {
     console.log("mounted: Socket.IO")
-    let elements = document.getElementById('socketio-icon');
+    // let elements = document.getElementById('socketio-icon');
     // const socket = io("ws://localhost:8888")
     const socket = process.env.NODE_ENV === "development" ? io("ws://localhost:8888") : io()    
 
     socket.on('connect', () => {
       console.log("Socket.io connected.")
-      elements.classList.remove("text-danger");
-      elements.classList.add("text-success");
+      this.connected = true
+      // elements.classList.remove("text-danger");
+      // elements.classList.add("text-success");
     })
     
     socket.on('disconnect', (reason) => {
       console.log("Socket.io disconnection due to:", reason)
-      elements.classList.remove("text-success");
-      elements.classList.add("text-danger");
+      // elements.classList.remove("text-success");
+      // elements.classList.add("text-danger");
+      this.connected = false
     })
 
     socket.on("telnet", (arg) => {
@@ -59,11 +63,6 @@ export default {
         store.output += "\n" + "(Syslog): "      
         store.output += `IP: ${json.ipaddr}, `
         store.output += `Message: ${json.msg}, `   
-        store.output += `City: ${json.city}, `   
-        store.output += `Country: ${json.country}, `
-        store.output += `AS Number: ${json.as_number}, `
-        store.output += `AS Organization: ${json.as_org}, `   
-        store.output += `GPS: ${json.gps}`
       } catch (error) {
         console.log(error)
         store.output += "\n" + "Syslog: invalid data received from server!"  

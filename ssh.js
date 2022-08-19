@@ -54,7 +54,11 @@ const server = new Server({
       });
   }).on('close', () => {
     log.debug('SSH Client disconnected');
+  }).on('error', (error) => {
+    log.debug('SSH Client Error');
   });
 }).listen( SSH_PORT , '0.0.0.0', function() {
     log.info(`SSH2 server started on port ${SSH_PORT}!`)  
+}).on('error', (error) => {
+  log.debug('SSH Server Error');
 });

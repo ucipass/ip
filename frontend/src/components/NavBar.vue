@@ -45,6 +45,9 @@ export default {
       store
     }
   },
+  mounted: async function() {
+    console.log("mounted: NavBar")
+  }
 }
 </script>
 

@@ -44,8 +44,8 @@ const server = new Server({
           stream = accept();
           ipaddr = client._sock.remoteAddress
           let output = await geolookup(ipaddr,"SSH Client")
-          output = JSON.stringify(output)
-          stream.write(output);
+          let output_string = JSON.stringify(output)
+          stream.write(output_string);
           stream.exit(0);
           stream.end();
           const io = await sio

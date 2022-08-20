@@ -1,6 +1,28 @@
 <template>
-  <router-view/>
+    <NavBar/>
+    <MessageArea/>
+    <ModalMessage/>
 </template>
+
+<script>
+
+import NavBar        from '@/components/NavBar.vue'
+import MessageArea   from '@/components/MessageArea.vue'
+import ModalMessage   from '@/components/ModalMessage.vue'
+
+export default {
+  name: 'App',
+  components: {
+    // eslint-disable-next-line
+    NavBar,MessageArea,ModalMessage
+  },
+  methods: {
+  },
+  mounted: async function() {
+    console.log("mounted: App")
+  }
+}
+</script>
 
 <style>
 html,

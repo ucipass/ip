@@ -27,3 +27,9 @@ sudo iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
 # add the below line to a rsyslog configuration file to forward logs to the syslog port
 kern.info                       @127.0.0.1:5514
 ```
+
+# Testing
+```
+# Test GeoIP functionality by setting the HTTP header
+curl -H "X-Forwarded-For: 152.66.115.1" localhost:8080
+```

@@ -65,17 +65,17 @@ server.on('msg', async data => {
 	*/
 })
 .on('invalid', err => {
-	console.warn('Invalid message format received: %o\n', err) ;
+	log.debug('Invalid message format received: %o\n', err) ;
 })
 .on('error', err => {
-	console.warn('Client disconnected abruptly: %o\n', err) ;
+	log.debug('Client disconnected abruptly: %o\n', err) ;
 })
 .on('connection', s => {
 	let addr = s.address().address ;
-	console.log(`Client connected: ${addr}\n`) ;
+	log.info(`Client connected: ${addr}\n`) ;
 	clients.push(s) ;
 	s.on('end', () => {
-		console.log(`Client disconnected: ${addr}\n`) ;
+		log.info(`Client disconnected: ${addr}\n`) ;
 		let i = clients.indexOf(s) ;
 		if(i !== -1)
 			clients.splice(i, 1) ;
@@ -88,16 +88,16 @@ server.on('msg', async data => {
 })
 .catch(err => {
 	if ((err.code == 'EACCES') && (port < 1024)) {
-		console.error('Cannot listen on ports below 1024 without root permissions. Select a higher port number: %o', err) ;
+		log.error('Cannot listen on ports below 1024 without root permissions. Select a higher port number: %o', err) ;
 	}
 	else { // Some other error so attempt to close server socket
-		console.error(`Error listening to ${address}:${port} - %o`, err) ;
+		log.error(`Error listening to ${address}:${port} - %o`, err) ;
 		try {
 			if(listening)
 				server.close() ;
 		}
 		catch (err) {
-			console.warn(`Error trying to close server socket ${address}:${port} - %o`, err) ;
+			log.warn(`Error trying to close server socket ${address}:${port} - %o`, err) ;
 		}
 	}
 }) ;

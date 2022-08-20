@@ -41,21 +41,48 @@ if (fs.existsSync(CERT_KEY) && fs.readFileSync(CERT_PEM)) {
 
 
 //HTTP SERVER
+
 const app = express();
 app.use("/", async (req, res, next) => {
-    var ua = parser(req.headers['user-agent']);
-    log.debug(ua.engine.name)
-    if (ua.engine.name){
-        next()  
+    if (req.originalUrl == "/" ){
+        var ua = parser(req.headers['user-agent']);
+        req.ipaddr = requestIp.getClientIp(req);
+        log.debug(ua.engine.name)
+        let output = await geolookup(req.ipaddr,"HTTP Client")
+        const sio = require("./sio.js")
+        const io = await sio
+        io.of("/").emit("http",output)       
+        if ( ua.engine.name ){
+            next()  
+        }else{
+            output_string = JSON.stringify(output, null, 2)  
+            res.writeHead(200);	res.end(output_string);             
+        }        
     }else{
-        const ipaddr = requestIp.getClientIp(req); 
-        let output = await geolookup(ipaddr,"Telnet Client")
-        output_string = JSON.stringify(output, null, 2)
-        res.writeHead(200);	res.end(output_string);
+        next()
     }
-    
-  })
+})
+
 app.use(express.static('./frontend/dist'))
+
+app.use(function(req, res, next) {
+    res.status(404);
+  
+    // respond with html page
+    if (req.accepts('html')) {
+        res.status(404).send('Sorry, we cannot find that!\n\r')
+        return;
+    }
+  
+    // respond with json
+    if (req.accepts('json')) {
+      res.json({ error: 'Not found' });
+      return;
+    }
+  
+    // default to plain-text. send()
+    res.type('txt').send('Not found');
+  });
 
 module.exports = new Promise((resolve, reject) => {
     const server = http.createServer(app).listen(HTTP_PORT,"0.0.0.0", ()=>{ 

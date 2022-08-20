@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  ip:
+    container_name: "ip" 
+    build:
+      context: .
+    image: ucipass/ip
+    environment:
+      - HTTP_PORT=80
+      - SSH_PORT=22
+      - TELNET_PORT=23
+    ports: 
+      - 80:80
+      - 443:443
+      - 23:23
+      - 22:22
+      - 5514:5514

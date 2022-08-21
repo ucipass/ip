@@ -65,23 +65,27 @@ app.use("/", async (req, res, next) => {
 
 app.use(express.static('./frontend/dist'))
 
-app.use(function(req, res, next) {
-    res.status(404);
-  
+app.use(async function (req, res, next) {
+    req.ipaddr = requestIp.getClientIp(req);
+    let output = await geolookup(req.ipaddr,"HTTP Client")
+    const sio = require("./sio.js")
+    const io = await sio
+    io.of("/").emit("http",output)  
+
     // respond with html page
     if (req.accepts('html')) {
-        res.status(404).send('Sorry, we cannot find that!\n\r')
+        res.send(output)
         return;
     }
   
     // respond with json
     if (req.accepts('json')) {
-      res.json({ error: 'Not found' });
+      res.json(output);
       return;
     }
   
     // default to plain-text. send()
-    res.type('txt').send('Not found');
+    res.type('txt').send(output);
   });
 
 module.exports = new Promise((resolve, reject) => {

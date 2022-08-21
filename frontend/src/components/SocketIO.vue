@@ -81,8 +81,6 @@ export default {
     socket.on('connect', () => {
       console.log("Socket.io connected.")
       this.connected = true
-      // elements.classList.remove("text-danger");
-      // elements.classList.add("text-success");
     })
     
     socket.on('disconnect', (reason) => {
@@ -112,7 +110,6 @@ export default {
 
     socket.on("status", (arg) => {
       try {
-        console.log(arg)
         store.socketIO.status = arg
       } catch (error) {
         console.log("status",error)

@@ -1,25 +1,27 @@
 <template>
   <div>
-      <button type="button" class="btn btn-sm text-light" @click="buttonInformation">
-        <i v-if="connected" id="socketio-icon" class="bi bi-info-circle text-success" style="font-size: 1.5rem;"></i>
-        <i v-if="!connected" id="socketio-icon" class="bi bi-x-circle text-danger" style="font-size: 1.5rem;"></i>        
-      </button>
-
       <div class="btn-group btn-sm" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-sm text-light" @click="buttonPlay">
-          <i class="bi bi-play-circle text-success" style="font-size: 1.5rem;"></i>       
-        </button>
-        <button type="button" class="btn btn-sm text-light" @click="buttonPause">
-          <i class="bi bi-pause-circle text-success" style="font-size: 1.5rem;"></i>       
-        </button>
-        <button type="button" class="btn btn-sm text-light" @click="buttonStop">
-          <i class="bi bi-stop-circle text-success" style="font-size: 1.5rem;"></i>       
+        <!-- <button type="button" class="btn btn-sm" :class="`${connected ? 'disabled' : ''}`" @click="buttonPlay">
+          <div v-if='connected' class="spinner-border text-success b-0" role="status" style="font-size: 0.75rem; height: 1.5rem; width: 1.5rem;">
+            <span class="visually-hidden">Loading...</span>
+          </div>     
+        </button> -->
+        <button type="button" class="btn btn-sm text-light" @click="store.socketIO.pause=!store.socketIO.pause">
+          <i v-if="store.socketIO.pause" class="bi bi-play-circle" :class="`${connected ? 'text-success' : 'text-secondary'}`" style="font-size: 1.5rem;"></i>   
+          <i v-else class="bi bi-pause-circle" :class="`${connected ? 'text-success' : 'text-secondary'}`" style="font-size: 1.5rem;"></i>        
         </button>
         <button type="button" class="btn btn-sm text-light" @click="buttonTrash">
           <i class="bi bi-trash text-success" style="font-size: 1.5rem;"></i>       
         </button>
         <button type="button" class="btn btn-sm text-light" @click="buttonSettings">
           <i class="bi bi-gear text-success" style="font-size: 1.5rem;"></i>       
+        </button>
+        <button type="button" class="btn btn-sm text-light" @click="buttonInformation">
+          <i v-if="connected" id="socketio-icon" class="bi bi-info-circle text-success" style="font-size: 1.5rem;"></i>
+          <i v-if="!connected" id="socketio-icon" class="bi bi-x-circle text-danger" style="font-size: 1.5rem;"></i>        
+        </button>
+        <button type="button" class="btn btn-sm text-light" @click="buttonHelp">
+          <i class="bi bi-question-circle text-success" style="font-size: 1.5rem;"></i>       
         </button>
       </div>
 
@@ -51,33 +53,23 @@ export default {
       let modal = new Modal(elem)
       modal.show()      
     },
+    buttonTrash(){
+      store.output = `${(new Date()).toLocaleTimeString()} - Logs deleted.`
+    },
+    buttonSettings(){
+      store.modalMessage.title = "Settings"
+      store.modalMessage.message = "This feature is not implemented yet!"
+      this.showModalMessage()
+    },
     buttonInformation(){
       store.modalMessage.title = "Information"
       store.modalMessage.message = store.socketIO.status
       this.showModalMessage()
     },
-    buttonPlay(){
-      store.modalMessage.title = "Play"
-      store.modalMessage.message = "Feature not implemented yet!"
+    buttonHelp(){
+      store.modalMessage.title = "Help"
+      store.modalMessage.message = "This Web application listens to and monitors incoming connections for ICMP, HTTP, SSH & TELNET protocols. The application will provide Geo and location other protocol specific data that can be useful for network professional. There is no authentication requirement for any of the above protocols so the application should be considered insecure and should only be used for testing environments!  Inbound connections are rate-limited!"
       this.showModalMessage()
-    },
-    buttonStop(){
-      store.modalMessage.title = "Stop"
-      store.modalMessage.message = "Feature not implemented yet!"
-      this.showModalMessage()
-    },
-    buttonPause(){
-      store.modalMessage.title = "Pause"
-      store.modalMessage.message = "Feature not implemented yet!"
-      this.showModalMessage()
-    },
-    buttonSettings(){
-      store.modalMessage.title = "Settings"
-      store.modalMessage.message = "Feature not implemented yet!"
-      this.showModalMessage()
-    },
-    buttonTrash(){
-      store.output = `${(new Date()).toLocaleTimeString()} - Logs deleted.`
     },
 
   },
@@ -100,38 +92,22 @@ export default {
 
     messages.icmp = messages.icmp || new Queue() ; 
     socket.on("icmp", (arg) => {
-      try {
-        console.log(arg)
-        let msg = "\n" + "(ICMP): "      
-        msg += `IP: ${arg.ipaddr}, `
-        msg += `City: ${arg.city}, `   
-        msg += `Country: ${arg.country}, `
-        msg += `AS Number: ${arg.as_number}, `
-        msg += `AS Organization: ${arg.as_org}, `   
-        msg += `GPS: ${arg.gps}`
-        messages.icmp.enqueue(msg)
-      } catch (error) {
-        console.log(error)
-        messages.icmp.enqueue("\n" + "ICMP: invalid data received from server!")
-      }
+        messages.icmp.enqueue(arg)
     })
-    
+
     messages.ssh = messages.ssh || new Queue() ; 
     socket.on("ssh", (arg) => {
-      try {
-        console.log(arg)
-        let msg = "\n" + "(SSH): "      
-        msg += `IP: ${arg.ipaddr}, `
-        msg += `City: ${arg.city}, `   
-        msg += `Country: ${arg.country}, `
-        msg += `AS Number: ${arg.as_number}, `
-        msg += `AS Organization: ${arg.as_org}, `   
-        msg += `GPS: ${arg.gps}`
-        messages.ssh.enqueue(msg)
-      } catch (error) {
-        console.log(error)
-        messages.ssh.enqueue("\n" + "SSH: invalid data received from server!")
-      }
+        messages.ssh.enqueue(arg)
+    })
+
+    messages.telnet = messages.telnet || new Queue() ; 
+    socket.on("telnet", (arg) => {
+        messages.telnet.enqueue(arg)
+    })
+
+    messages.http = messages.http || new Queue() ; 
+    socket.on("http", (arg) => {
+        messages.http.enqueue(arg)
     })
 
     socket.on("status", (arg) => {
@@ -140,43 +116,6 @@ export default {
         store.socketIO.status = arg
       } catch (error) {
         console.log("status",error)
-      }
-    })
-
-
-    messages.telnet = messages.telnet || new Queue() ; 
-    socket.on("telnet", (arg) => {
-      try {
-        console.log(arg)
-        let msg = "\n" + "(TELNET): "      
-        msg += `IP: ${arg.ipaddr}, `
-        msg += `City: ${arg.city}, `   
-        msg += `Country: ${arg.country}, `
-        msg += `AS Number: ${arg.as_number}, `
-        msg += `AS Organization: ${arg.as_org}, `   
-        msg += `GPS: ${arg.gps}`
-        messages.telnet.enqueue(msg)
-      } catch (error) {
-        console.log(error)
-        messages.telnet.enqueue("\n" + "Telnet: invalid data received from server!")
-      }
-    })
-    
-    messages.http = messages.http || new Queue() ; 
-    socket.on("http", (arg) => {
-      try {
-        console.log(arg)
-        let msg = "\n" + "(HTTP): "      
-        msg += `IP: ${arg.ipaddr}, `
-        msg += `City: ${arg.city}, `   
-        msg += `Country: ${arg.country}, `
-        msg += `AS Number: ${arg.as_number}, `
-        msg += `AS Organization: ${arg.as_org}, `   
-        msg += `GPS: ${arg.gps}`
-        messages.http.enqueue(msg)
-      } catch (error) {
-        console.log(error)
-        messages.http.enqueue("\n" + "HTTP: invalid data received from server!")
       }
     })
     

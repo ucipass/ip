@@ -24,48 +24,95 @@ export default {
     }
   },
   methods: {
+    handler_icmp(){
+      let icmp = store.socketIO.messages.icmp || {}
+      while(icmp.length){
+        try {
+          let arg = icmp.dequeue()
+          console.log(arg)
+          let msg = `\n${(new Date()).toLocaleTimeString()} - ${arg.ipaddr}, ICMP, `      
+          msg += `City: ${arg.city}, `   
+          msg += `Country: ${arg.country}, `
+          msg += `AS Number: ${arg.as_number}, `
+          msg += `AS Organization: ${arg.as_org}, `   
+          msg += `GPS: ${arg.gps}`
+          store.output += msg;
+        } catch (error) {
+          console.log(error)
+        }        
+      }
+    },
+    handler_ssh(){
+      let ssh = store.socketIO.messages.ssh || {}
+      while(ssh.length){
+        try {
+          let arg = ssh.dequeue()
+          console.log(arg)
+          let msg = `\n${(new Date()).toLocaleTimeString()} - ${arg.ipaddr}, SSH, `      
+          msg += `City: ${arg.city}, `   
+          msg += `Country: ${arg.country}, `
+          msg += `AS Number: ${arg.as_number}, `
+          msg += `AS Organization: ${arg.as_org}, `   
+          msg += `GPS: ${arg.gps}`
+          store.output += msg;
+        } catch (error) {
+          console.log(error)
+        }        
+      }
+    },
+    handler_telnet(){
+      let telnet = store.socketIO.messages.telnet || {}
+      while(telnet.length){
+        try {
+          let arg = telnet.dequeue()
+          console.log(arg)
+          let msg = `\n${(new Date()).toLocaleTimeString()} - ${arg.ipaddr}, TELNET, `      
+          msg += `City: ${arg.city}, `   
+          msg += `Country: ${arg.country}, `
+          msg += `AS Number: ${arg.as_number}, `
+          msg += `AS Organization: ${arg.as_org}, `   
+          msg += `GPS: ${arg.gps}`
+          store.output += msg;
+        } catch (error) {
+          console.log(error)
+        }        
+      }
+    },
+    handler_http(){
+      let http = store.socketIO.messages.http || {}
+      while(http.length){
+        try {
+          let arg = http.dequeue()
+          console.log(arg)
+          let msg = `\n${(new Date()).toLocaleTimeString()} - ${arg.ipaddr}, HTTP, `      
+          msg += `City: ${arg.city}, `   
+          msg += `Country: ${arg.country}, `
+          msg += `AS Number: ${arg.as_number}, `
+          msg += `AS Organization: ${arg.as_org}, `   
+          msg += `GPS: ${arg.gps}`
+          store.output += msg;
+        } catch (error) {
+          console.log(error)
+        }        
+      }
+    }
   },
   mounted: async function() {
     console.log("mounted: MessageArea")
+
     setInterval(() => {
+      this.handler_ssh()
+      this.handler_icmp()
+      this.handler_telnet()
+      this.handler_http()
       
-      let telnet = store.socketIO.messages.telnet || {}
-      let msg = ""
-      while(telnet.length){
-        msg += telnet.dequeue()
-      }
-      if ( msg.length > 0 ){
-        store.output += msg
-      }
 
-      let ssh = store.socketIO.messages.ssh || {}
-      let ssh_msg = ""
-      while(ssh.length){
-        ssh_msg += ssh.dequeue()
-      }
-      if ( ssh_msg.length > 0 ){
-        store.output += ssh_msg
-      }
-
-      let icmp = store.socketIO.messages.icmp || {}
-      let icmp_msg = ""
-      while(icmp.length){
-        icmp_msg += icmp.dequeue()
-      }
-      if ( icmp_msg.length > 0 ){
-        store.output += icmp_msg
-      }
-
-      let http = store.socketIO.messages.http || {}
-      let http_msg = ""
-      while(http.length){
-        http_msg += http.dequeue()
-      }
-      if ( http_msg.length > 0 ){
-        store.output += http_msg
-      }
     }, 100);
-  }
+  
+  }      
+
+
+
 }
 </script>
 

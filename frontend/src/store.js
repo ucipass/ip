@@ -3,11 +3,12 @@ import { reactive } from 'vue'
 export const store = reactive({
   config: null,
   language: "en",
-  output: "Listening for Telnet, SSH, HTTP and ICMP packets...",
+  output: `${(new Date()).toLocaleTimeString()} - Listening for Telnet, SSH, HTTP and ICMP packets...`,
   socketIO:
   {
     messages: {},
     io: null,
+    pause: false,
     status: "No status info"
   },
   modalMessage: {

@@ -16,7 +16,7 @@ module.exports = http
     io.on("connection", async (socket)=>{
         // let headers = socket.handshake.headers
         let ipaddr = socket.handshake.address
-        let ipaddr2 = socket.handshake.headers
+        let ipaddr2 = socket.handshake.headers['x-forwarded-for']
         log.info(ipaddr)
         log.info(ipaddr2)
         const status = {

@@ -11,12 +11,11 @@ export default {
     }
   },
   watch:{
-    message (){
-      setInterval(() => {
-        let textarea = document.getElementById('syslog_messages');
-        textarea.scrollTop = textarea.scrollHeight;        
-      }, 100);
-
+    // Scroll down when textarea changes
+    async message (){
+      await new Promise(resolve => setTimeout(resolve, 10));
+      let textarea = document.getElementById('syslog_messages');
+      textarea.scrollTop = textarea.scrollHeight;  
     }
   },
   computed: {
@@ -72,7 +71,7 @@ export default {
 
 <template>
  <div class="d-flex flex-column flex-fill ">
-  <textarea class="d-flex flex-grow-1 form-control terminal text-white bg-dark" id="syslog_messages"  @onchange="changeHandler" :value="message"  readonly></textarea>
+  <textarea class="d-flex flex-grow-1 form-control terminal text-white bg-dark" id="syslog_messages" :value="message"  readonly></textarea>
  </div>
 </template>
 

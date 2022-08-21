@@ -1,10 +1,30 @@
 <template>
   <div>
-      <button type="button" class="btn btn-sm text-light" @click="socketIOPopup">
-        <i v-if="connected" id="socketio-icon" class="bi bi-check-circle text-success" style="font-size: 1.5rem;"></i>
+      <button type="button" class="btn btn-sm text-light" @click="buttonInformation">
+        <i v-if="connected" id="socketio-icon" class="bi bi-info-circle text-success" style="font-size: 1.5rem;"></i>
         <i v-if="!connected" id="socketio-icon" class="bi bi-x-circle text-danger" style="font-size: 1.5rem;"></i>        
       </button>
+
+      <div class="btn-group btn-sm" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-sm text-light" @click="buttonPlay">
+          <i class="bi bi-play-circle text-success" style="font-size: 1.5rem;"></i>       
+        </button>
+        <button type="button" class="btn btn-sm text-light" @click="buttonPause">
+          <i class="bi bi-pause-circle text-success" style="font-size: 1.5rem;"></i>       
+        </button>
+        <button type="button" class="btn btn-sm text-light" @click="buttonStop">
+          <i class="bi bi-stop-circle text-success" style="font-size: 1.5rem;"></i>       
+        </button>
+        <button type="button" class="btn btn-sm text-light" @click="buttonTrash">
+          <i class="bi bi-trash text-success" style="font-size: 1.5rem;"></i>       
+        </button>
+        <button type="button" class="btn btn-sm text-light" @click="buttonSettings">
+          <i class="bi bi-gear text-success" style="font-size: 1.5rem;"></i>       
+        </button>
+      </div>
+
   </div>
+  
 </template>
 
 <script>
@@ -26,12 +46,40 @@ export default {
     }
   },
   methods: {
-    socketIOPopup(){
-      let elem = document.getElementById('ModalMessage')
+    showModalMessage(){
+      let elem = document.getElementById('modalMessage')
       let modal = new Modal(elem)
-      modal.show()
-      console.log("ev")
-    }
+      modal.show()      
+    },
+    buttonInformation(){
+      store.modalMessage.title = "Information"
+      store.modalMessage.message = store.socketIO.status
+      this.showModalMessage()
+    },
+    buttonPlay(){
+      store.modalMessage.title = "Play"
+      store.modalMessage.message = "Feature not implemented yet!"
+      this.showModalMessage()
+    },
+    buttonStop(){
+      store.modalMessage.title = "Stop"
+      store.modalMessage.message = "Feature not implemented yet!"
+      this.showModalMessage()
+    },
+    buttonPause(){
+      store.modalMessage.title = "Pause"
+      store.modalMessage.message = "Feature not implemented yet!"
+      this.showModalMessage()
+    },
+    buttonSettings(){
+      store.modalMessage.title = "Settings"
+      store.modalMessage.message = "Feature not implemented yet!"
+      this.showModalMessage()
+    },
+    buttonTrash(){
+      store.output = `${(new Date()).toLocaleTimeString()} - Logs deleted.`
+    },
+
   },
   mounted: async function() {
     let messages = store.socketIO.messages

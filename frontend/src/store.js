@@ -9,5 +9,9 @@ export const store = reactive({
     messages: {},
     io: null,
     status: "No status info"
+  },
+  modalMessage: {
+    title: "Title",
+    Messagef: "Message",
   }
 })

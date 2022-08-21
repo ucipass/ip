@@ -15,10 +15,7 @@ module.exports = http
     const io = sio(server, options)
     io.on("connection", async (socket)=>{
         // let headers = socket.handshake.headers
-        let ipaddr = socket.handshake.address
-        let ipaddr2 = socket.handshake.headers['x-forwarded-for']
-        log.info(ipaddr)
-        log.info(ipaddr2)
+        let ipaddr = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address
         const status = {
             connections: io.sockets.sockets.size
         } 
@@ -27,7 +24,7 @@ module.exports = http
         connection = JSON.stringify(socket.handshake)
         socket.emit("http",output);
         socket.on("howdy", (arg)=>{
-            console.log(arg)
+            log.info(arg)
         })
     })    
     return io

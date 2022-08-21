@@ -3,6 +3,7 @@ services:
   ip:
     container_name: "ip" 
     image: ucipass/ip:latest
+    restart: always
     environment:
       - HTTP_PORT=80
       - SSH_PORT=22

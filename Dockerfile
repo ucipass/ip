@@ -19,4 +19,7 @@ COPY index.html /app
 COPY host.key /app
 COPY host.key.pub /app
 EXPOSE 80
+
+HEALTHCHECK CMD curl --fail http://localhost:80 || exit 1 
+
 CMD ["npm", "start"]

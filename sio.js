@@ -13,15 +13,19 @@ module.exports = http
     }
     const io = sio(server, options)
     io.on("connection", async (socket)=>{
-        let headers = socket.handshake.headers
+        // let headers = socket.handshake.headers
         let ipaddr = socket.handshake.address
+        const status = {
+            connections: io.sockets.sockets.size
+        } 
+        socket.emit("status",status);
         let output = await geolookup(ipaddr,"HTTP Client")
         connection = JSON.stringify(socket.handshake)
         socket.emit("http",output);
         socket.on("howdy", (arg)=>{
             console.log(arg)
         })
-    })
+    })    
     return io
 })
 .catch(error => {

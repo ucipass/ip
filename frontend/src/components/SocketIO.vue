@@ -36,8 +36,6 @@ export default {
   mounted: async function() {
     let messages = store.socketIO.messages
     console.log("mounted: Socket.IO")
-    // let elements = document.getElementById('socketio-icon');
-    // const socket = io("ws://localhost:8888")
     const socket = process.env.NODE_ENV === "development" ? io("ws://localhost:8888") : io()    
 
     socket.on('connect', () => {
@@ -49,8 +47,6 @@ export default {
     
     socket.on('disconnect', (reason) => {
       console.log("Socket.io disconnection due to:", reason)
-      // elements.classList.remove("text-success");
-      // elements.classList.add("text-danger");
       this.connected = false
     })
 
@@ -89,7 +85,17 @@ export default {
         messages.ssh.enqueue("\n" + "SSH: invalid data received from server!")
       }
     })
-    
+
+    socket.on("status", (arg) => {
+      try {
+        console.log(arg)
+        store.socketIO.status = arg
+      } catch (error) {
+        console.log("status",error)
+      }
+    })
+
+
     messages.telnet = messages.telnet || new Queue() ; 
     socket.on("telnet", (arg) => {
       try {

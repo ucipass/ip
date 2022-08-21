@@ -7,6 +7,7 @@ export const store = reactive({
   socketIO:
   {
     messages: {},
-    io: null
+    io: null,
+    status: "No status info"
   }
 })

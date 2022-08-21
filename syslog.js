@@ -43,7 +43,7 @@ server.on('msg', async data => {
 		let output = await geolookup(ipaddr,"ICMP")
 		output_string = JSON.stringify(output, null, 2)	
 		const io = await sio
-		io.of("/").emit("icmp",output_string)
+		io.of("/").emit("icmp",output)
 	}
 
 	/*

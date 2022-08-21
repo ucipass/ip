@@ -2,9 +2,10 @@
   <nav id="Navbar" class="navbar sticky-top navbar-expand navbar-dark bg-dark">
     <div class="container-fluid">
 
-      <a class="navbar-brand m-0 p-0" href="#">
+      <!-- <a class="navbar-brand m-0 p-0" href="#">
         <i class="bi bi-house-fill" style="font-size: 1.5rem;"></i>
-      </a>
+      </a> -->
+      
       <SocketIO/>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

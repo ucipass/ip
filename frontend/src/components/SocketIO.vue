@@ -68,7 +68,7 @@ export default {
     },
     buttonHelp(){
       store.modalMessage.title = "Help"
-      store.modalMessage.message = "This Web application listens to and monitors incoming connections for ICMP, HTTP, SSH & TELNET protocols. The application will provide Geo and location other protocol specific data that can be useful for network professional. There is no authentication requirement for any of the above protocols so the application should be considered insecure and should only be used for testing environments!  Inbound connections are rate-limited!"
+      store.modalMessage.message = "This Web application listens to and monitors incoming connections for ICMP, HTTP, SSH & TELNET protocols. The application will provide Geo location and other protocol specific data that can be useful for network professional. There is no authentication requirement for any of the above protocols so the application should be considered insecure and should only be used for testing environments!  Inbound connections are rate-limited!"
       this.showModalMessage()
     },
 

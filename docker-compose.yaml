@@ -2,8 +2,6 @@ version: '3.7'
 services:
   ip:
     container_name: "ip" 
-    build:
-      context: .
     image: ucipass/ip
     environment:
       - HTTP_PORT=80

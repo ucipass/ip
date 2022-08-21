@@ -27,6 +27,14 @@ sudo iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
 # add the below line to a rsyslog configuration file to forward logs to the syslog port
 kern.info                       @127.0.0.1:5514
 ```
+# Docker configuration
+In order to allow the docker container to "see" the source ip of incoming requests create the file “/etc/docker/daemon.json” with the following content:
+```
+{
+     "userland-proxy": false
+}
+```
+
 
 # Testing
 ```

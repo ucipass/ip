@@ -1,6 +1,7 @@
 const sio = require("socket.io");
 const http = require("./http.js")
 const geolookup = require('./geolookup.js')
+const log = require("./log.js")
 
 // Exports Socket.io instance
 module.exports = http
@@ -15,6 +16,9 @@ module.exports = http
     io.on("connection", async (socket)=>{
         // let headers = socket.handshake.headers
         let ipaddr = socket.handshake.address
+        let ipaddr2 = socket.handshake.headers
+        log.info(ipaddr)
+        log.info(ipaddr2)
         const status = {
             connections: io.sockets.sockets.size
         } 

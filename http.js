@@ -47,8 +47,6 @@ app.use("/", async (req, res, next) => {
     if (req.originalUrl == "/" ){
         var ua = parser(req.headers['user-agent']);
         req.ipaddr = requestIp.getClientIp(req);
-        log.info(req.ipaddr)
-        log.info(req.headers['x-forwarded-for'])
         log.debug(ua.engine.name)
         let output = await geolookup(req.ipaddr,"HTTP Client")
         const sio = require("./sio.js")

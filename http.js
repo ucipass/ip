@@ -68,6 +68,7 @@ app.use(express.static('./frontend/dist'))
 app.use(async function (req, res, next) {
     req.ipaddr = requestIp.getClientIp(req);
     let output = await geolookup(req.ipaddr,"HTTP Client")
+    output.path = req.path
     const sio = require("./sio.js")
     const io = await sio
     io.of("/").emit("http",output)  
@@ -77,6 +78,7 @@ app.use(async function (req, res, next) {
         res.send(output)
         return;
     }
+
   
     // respond with json
     if (req.accepts('json')) {

@@ -84,7 +84,7 @@ export default {
         try {
           let arg = http.dequeue()
           console.log(arg)
-          let msg = `\n${(new Date()).toLocaleTimeString()} - ${arg.ipaddr}, HTTP, `      
+          let msg = `\n${(new Date()).toLocaleTimeString()} - ${arg.ipaddr}, HTTP, ${arg.path || "/"}, `      
           msg += `City: ${arg.city}, `   
           msg += `Country: ${arg.country}, `
           msg += `AS Number: ${arg.as_number}, `

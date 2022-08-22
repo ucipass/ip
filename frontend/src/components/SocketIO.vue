@@ -6,21 +6,21 @@
             <span class="visually-hidden">Loading...</span>
           </div>     
         </button> -->
-        <button type="button" class="btn btn-sm text-light" @click="store.socketIO.pause=!store.socketIO.pause">
-          <i v-if="store.socketIO.pause" class="bi bi-play-circle" :class="`${connected ? 'text-success' : 'text-secondary'}`" style="font-size: 1.5rem;"></i>   
+        <button type="button" class="btn btn-sm text-light" @click="store.socketIO.pause=!store.socketIO.pause" data-bs-toggle="tooltip" data-bs-placement="bottom" :title="store.socketIO.pause ? 'Resume log display' : 'Pause log display'">
+          <i v-if="store.socketIO.pause" class="bi bi-play-circle" :class="`${connected ? 'text-success' : 'text-secondary'}`" style="font-size: 1.5rem;" ></i>   
           <i v-else class="bi bi-pause-circle" :class="`${connected ? 'text-success' : 'text-secondary'}`" style="font-size: 1.5rem;"></i>        
         </button>
-        <button type="button" class="btn btn-sm text-light" @click="buttonTrash">
+        <button type="button" class="btn btn-sm text-light" @click="buttonTrash" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete logs">
           <i class="bi bi-trash text-success" style="font-size: 1.5rem;"></i>       
         </button>
-        <button type="button" class="btn btn-sm text-light" @click="buttonSettings">
+        <button type="button" class="btn btn-sm text-light" @click="buttonSettings" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Settings">
           <i class="bi bi-gear text-success" style="font-size: 1.5rem;"></i>       
         </button>
-        <button type="button" class="btn btn-sm text-light" @click="buttonInformation">
+        <button type="button" class="btn btn-sm text-light" @click="buttonInformation"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Connection Information">
           <i v-if="connected" id="socketio-icon" class="bi bi-info-circle text-success" style="font-size: 1.5rem;"></i>
           <i v-if="!connected" id="socketio-icon" class="bi bi-x-circle text-danger" style="font-size: 1.5rem;"></i>        
         </button>
-        <button type="button" class="btn btn-sm text-light" @click="buttonHelp">
+        <button type="button" class="btn btn-sm text-light" @click="buttonHelp" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Help">
           <i class="bi bi-question-circle text-success" style="font-size: 1.5rem;"></i>       
         </button>
       </div>

@@ -9,6 +9,7 @@
 import NavBar        from '@/components/NavBar.vue'
 import MessageArea   from '@/components/MessageArea.vue'
 import ModalMessage   from '@/components/ModalMessage.vue'
+import { Tooltip } from 'bootstrap'
 
 export default {
   name: 'App',
@@ -19,6 +20,9 @@ export default {
   methods: {
   },
   mounted: async function() {
+    new Tooltip(document.body, {
+      selector: "[data-bs-toggle='tooltip']",
+    })
     console.log("mounted: App")
   }
 }

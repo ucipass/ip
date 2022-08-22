@@ -7,8 +7,8 @@ module.exports = async function (ipaddr,source) {
     let lookup_city = await maxmind.open(geolite2.paths.city)
     let geo1 = lookup_city.get(ipaddr);
     log.debug(geo1)
-    let city = geo1?.city?.names?.en || "UNKNOWN"
-    let country = geo1?.country?.names?.en || "UNKNOWN"
+    let city = geo1?.city?.names?.en || "n/a"
+    let country = geo1?.country?.names?.en || "n/a"
     let latitude = geo1?.location?.latitude || "0"
     let longitude = geo1?.location?.longitude || "0"
     let gps = `${latitude},${longitude}`
@@ -16,8 +16,8 @@ module.exports = async function (ipaddr,source) {
     let lookup_asn = await maxmind.open(geolite2.paths?.asn) 
     let geo2 = lookup_asn.get(ipaddr);
     log.debug(geo2)
-    let as_number = geo2?.autonomous_system_number || "0"
-    let as_org = geo2?.autonomous_system_organization || "UNKNOWN"
+    let as_number = geo2?.autonomous_system_number || "n/a"
+    let as_org = geo2?.autonomous_system_organization || "n/a"
 
     let geo = {
         ipaddr: ipaddr,

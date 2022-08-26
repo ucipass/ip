@@ -20,6 +20,7 @@
   "dependencies": {
     "blessed": "^0.1.81",
     "cors": "^2.8.5",
+    "dayjs": "^1.11.5",
     "express": "^4.18.1",
     "geolite2": "^3.5.1",
     "maxmind": "^4.3.1",

@@ -1,5 +1,5 @@
 {
-  "name": "ip",
+  "name": "whoami",
   "version": "1.0.0",
   "description": "Telnet server that returns the client's IP address and related information based on the MaxMind, GeoIP location database",
   "main": "index.js",

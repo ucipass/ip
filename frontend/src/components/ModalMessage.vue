@@ -16,7 +16,7 @@ export default {
       return text
     },
     message(){
-      let text = store.modalMessage.message || "Message"
+      let text = store.modalMessage.message || []
       return text
     }
   },

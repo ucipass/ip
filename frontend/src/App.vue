@@ -2,20 +2,22 @@
     <NavBar/>
     <MessageArea/>
     <ModalMessage/>
+    <ModalConnections/>
 </template>
 
 <script>
 
-import NavBar        from '@/components/NavBar.vue'
-import MessageArea   from '@/components/MessageArea.vue'
-import ModalMessage   from '@/components/ModalMessage.vue'
+import NavBar             from '@/components/NavBar.vue'
+import MessageArea        from '@/components/MessageArea.vue'
+import ModalMessage       from '@/components/ModalMessage.vue'
+import ModalConnections   from '@/components/ModalConnections.vue'
 import { Tooltip } from 'bootstrap'
 
 export default {
   name: 'App',
   components: {
     // eslint-disable-next-line
-    NavBar,MessageArea,ModalMessage
+    NavBar,MessageArea,ModalMessage,ModalConnections
   },
   methods: {
   },

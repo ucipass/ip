@@ -4,6 +4,7 @@ export const store = reactive({
   config: null,
   language: "en",
   output: `${(new Date()).toLocaleTimeString()} - Listening for Telnet, SSH, HTTP and ICMP packets...`,
+  pausedOutput: "",
   socketIO:
   {
     messages: {},

@@ -21,16 +21,38 @@ module.exports = http
         // let headers = socket.handshake.headers
         let ipaddr = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address
         const status = {
-            connections: io.sockets.sockets.size,
             server_start: server_start.from(dayjs())
         } 
-        socket.emit("status",status);
-        let output = await geolookup(ipaddr,"HTTP Client")
-        connection = JSON.stringify(socket.handshake)
-        socket.emit("http",output);
-        socket.on("howdy", (arg)=>{
-            log.info(arg)
+        
+        socket.geo = await geolookup(ipaddr,"HTTP Client")
+        socket.emit("http",socket.geo);
+
+        socket.on("status", ( data, fn )=> {
+            status.connections = []
+            io.sockets.sockets.forEach( socket => {
+                let con = {
+                    // id : socket.id,
+                    // headers: socket.handshake.headers,
+                    geo: socket.geo
+                }
+                status.connections.push(con)
+            });
+
+            fn( status )
         })
+
+        socket.on('disconnect', (data)=>{
+            status.connections = []
+            io.sockets.sockets.forEach( socket => {
+                let con = {
+                    // id : socket.id,
+                    // headers: socket.handshake.headers,
+                    geo: socket.geo
+                }
+                status.connections.push(con)
+            });
+        })        
+
     })    
     return io
 })

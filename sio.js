@@ -7,6 +7,7 @@ const relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 
 const server_start = dayjs()
+const max_client_minutes = 60
 // Exports Socket.io instance
 module.exports = http
 .then( server => {
@@ -26,6 +27,7 @@ module.exports = http
         
         socket.geo = await geolookup(ipaddr,"HTTP Client")
         socket.emit("http",socket.geo);
+        socket.socket_start = dayjs()
 
         socket.on("status", ( data, fn )=> {
             status.connections = []
@@ -33,7 +35,8 @@ module.exports = http
                 let con = {
                     // id : socket.id,
                     // headers: socket.handshake.headers,
-                    geo: socket.geo
+                    geo: socket.geo,
+                    start_time: socket.socket_start.from(dayjs())  
                 }
                 status.connections.push(con)
             });
@@ -54,6 +57,17 @@ module.exports = http
         })        
 
     })    
+
+    setInterval(() => {
+        cur_time = dayjs()
+        max_time = max_client_minutes * 60 * 1000
+        io.sockets.sockets.forEach( socket => {
+            let dur = cur_time.diff(socket.socket_start)
+            if (dur > max_time) {
+                socket.disconnect()
+            }
+        });
+    }, 10000);
     return io
 })
 .catch(error => {

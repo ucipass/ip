@@ -2,13 +2,13 @@
   <div>
       <div class="btn-group btn-sm" role="group" aria-label="Basic example">
 
-        <button type="button" :class="buttonClassPlay" @click="buttonPlay" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Resume log display">
+        <button type="button" :class="buttonClassPlay" @click="buttonPlay" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Resume log collection & display">
           <i  class="bi bi-play-circle" :class="connected ? 'text-success'  : ' text-danger'"   style="font-size: 1.5rem;" ></i>   
         </button>
         <button type="button" :class="buttonClassPause" @click="buttonPause" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Pause log display">
           <i class="bi bi-pause-circle" :class="connected ? 'text-success'  : ' text-danger'" style="font-size: 1.5rem;"></i>        
         </button>
-        <button type="button" :class="buttonStatusStop" @click="buttonStop" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Pause log display">
+        <button type="button" :class="buttonStatusStop" @click="buttonStop" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Stop log collection">
           <i class="bi bi-stop-circle " :class="connected ? 'text-success'  : ' text-danger'" style="font-size: 1.5rem;"></i>        
         </button>
 

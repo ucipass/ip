@@ -8,16 +8,32 @@ dayjs.extend(relativeTime)
 
 const server_start = dayjs()
 const max_client_minutes = 60
-// Exports Socket.io instance
-module.exports = http
-.then( server => {
+
+function customSocketIO(server) {
     const options = {
         cors: {
             origin: "http://localhost:8080",
             methods: ["GET", "POST"]
         }
     }
+
+    const maxHistory = 5
+
     const io = sio(server, options)
+    io.history = []
+    for (let index = 0; index < maxHistory; index++) {
+        io.history.push(null) 
+    }
+    io.send = async function(channel, message){
+        message.timeStamp = (new Date()).toLocaleTimeString()
+        await server
+        io.history.shift()
+        io.history.push({
+            channel: channel,
+            message: message
+        })
+        io.of("/").emit(channel,message)   
+    }
     io.on("connection", async (socket)=>{
         // let headers = socket.handshake.headers
         let ipaddr = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address
@@ -42,6 +58,10 @@ module.exports = http
             });
 
             fn( status )
+        })
+
+        socket.on("history", ( data, fn )=> {
+            fn( io.history )
         })
 
         socket.on('disconnect', (data)=>{
@@ -69,7 +89,11 @@ module.exports = http
         });
     }, 10000);
     return io
-})
+}
+
+// Exports Socket.io instance
+module.exports = http
+.then( customSocketIO )
 .catch(error => {
     console.log( "SOCKET.IO ERROR", error)
 })

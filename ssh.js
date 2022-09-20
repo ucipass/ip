@@ -49,7 +49,7 @@ const server = new Server({
           stream.exit(0);
           stream.end();
           const io = await sio
-          io.of("/").emit("ssh",output)          
+          io.send("ssh",output)          
         });
       });
   }).on('close', () => {

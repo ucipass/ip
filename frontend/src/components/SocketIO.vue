@@ -21,6 +21,9 @@
         <button type="button" class="btn btn-sm  text-light" @click="buttonInformation"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Connection Information">
           <i id="socketio-icon" class="bi bi-info-circle text-success" style="font-size: 1.5rem;"></i>     
         </button>
+        <button type="button" class="btn btn-sm  text-light" @click="buttonHistory"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Connection History">
+          <i id="socketio-icon" class="bi bi-clock text-success" style="font-size: 1.5rem;"></i>     
+        </button>
         <button type="button" class="btn btn-sm text-light" @click="buttonHelp" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Help">
           <i class="bi bi-question-circle text-success" style="font-size: 1.5rem;"></i>       
         </button>
@@ -110,7 +113,14 @@ export default {
         this.store.socketIO.status = status
         this.showModalMessage('modalConnections')        
       })
-
+    },
+    buttonHistory(){
+      this.socket.emit( "history", null ,(history) => {
+        store.output = ""
+        history.forEach( item => {
+          store.socketIO.messages[item.channel].enqueue(item.message)
+        });    
+      })
     },
     buttonHelp(){
       store.modalMessage.title = "Help"

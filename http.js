@@ -51,7 +51,7 @@ app.use("/", async (req, res, next) => {
         let output = await geolookup(req.ipaddr,"HTTP Client")
         const sio = require("./sio.js")
         const io = await sio
-        io.of("/").emit("http",output)       
+        io.send("http",output)       
         if ( ua.engine.name ){
             next()  
         }else{
@@ -71,7 +71,7 @@ app.use(async function (req, res, next) {
     output.path = req.path
     const sio = require("./sio.js")
     const io = await sio
-    io.of("/").emit("http",output)  
+    io.send("http",output)  
 
     // respond with html page
     if (req.accepts('html')) {
